@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Array Engine — Blueprint Interactivo</title>
+  <meta name="description" content="SPA didáctica isométrica que explica la iteración de arrays en JavaScript: for, forEach, map y reduce como máquinas industriales.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/machines.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       BARRA DE NAVEGACIÓN SUPERIOR
+       ========================================================================== -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">&lt;/&gt;</div>
+      <div>
+        <h1>Iteración de Arreglos</h1>
+        <span>MECÁNICA_JS_ESQUEMA_ISOMÉTRICO</span>
+      </div>
+    </div>
+
+    <nav class="nav-tabs" aria-label="Módulos de iteración">
+      <button class="tab-btn active" type="button" data-nav="hub" data-view="hub" aria-current="page">[ 00. HUB GENERAL ]</button>
+      <button class="tab-btn" type="button" data-nav="for" data-view="for">[ 01. FOR ]</button>
+      <button class="tab-btn" type="button" data-nav="forEach" data-view="forEach">[ 02. FOREACH ]</button>
+      <button class="tab-btn" type="button" data-nav="map" data-view="map">[ 03. MAP ]</button>
+      <button class="tab-btn" type="button" data-nav="reduce" data-view="reduce">[ 04. REDUCE ]</button>
+    </nav>
+  </header>
+
+  <!-- ==========================================================================
+       BREADCRUMBS TÉCNICOS · solo visibles dentro de una máquina
+       ========================================================================== -->
+  <nav class="breadcrumbs" id="breadcrumbs" aria-label="Ruta de navegación" hidden>
+    <button class="crumb-btn" type="button" data-nav="hub">[ ← HUB ]</button>
+    <span class="crumb-sep" aria-hidden="true">/</span>
+    <span class="crumb-current" id="breadcrumb-current">HUB GENERAL</span>
+  </nav>
+
+  <main>
+    <!-- ==========================================================================
+         VISTA 0 · HUB GENERAL   (lámina de referencia: assets/refs/index.jpg)
+         ========================================================================== -->
+    <section id="view-hub" class="view-container active" aria-label="Hub general">
+      <div class="hub-grid">
+
+        <!-- CARD 1: FOR -->
+        <article class="blueprint-card" data-nav="for" title="Abrir la máquina SYS_01">
+          <div class="card-technical-header">
+            <span>SYS_01 // SECUENCIAL_MECANICO</span>
+            <span>SPEC: O(N) MANUAL</span>
+          </div>
+          <div class="card-illustration">
+            <svg viewBox="0 0 300 160" width="100%" height="100%" aria-hidden="true">
+              <!-- Engranaje y regla simplificada -->
+              <circle cx="100" cy="80" r="45" stroke="#334155" stroke-width="2" fill="none" stroke-dasharray="6 4"/>
+              <circle cx="100" cy="80" r="22" stroke="var(--cyan-bright)" stroke-width="2" fill="#0f172a"/>
+              <line x1="50" y1="110" x2="250" y2="40" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+              <rect x="140" y="65" width="30" height="20" fill="var(--blue-accent)" stroke="var(--cyan-bright)" stroke-width="1.5" transform="rotate(-20 155 75)"/>
+              <text x="180" y="35" class="callout-label" fill="var(--cyan-bright)">ÍNDICE [i]</text>
+            </svg>
+          </div>
+          <div class="card-footer">
+            <strong>for:</strong> Recorre utilizando un contador mecánico.
+          </div>
+        </article>
+
+        <!-- CARD 2: FOREACH -->
+        <article class="blueprint-card" data-nav="forEach" title="Abrir la máquina SYS_02">
+          <div class="card-technical-header">
+            <span>SYS_02 // AGENTE_AUTONOMO</span>
+            <span>SPEC: DECLARATIVO</span>
+          </div>
+          <div class="card-illustration">
+            <svg viewBox="0 0 300 160" width="100%" height="100%" aria-hidden="true">
+              <!-- Dron escaneando -->
+              <ellipse cx="150" cy="40" rx="35" ry="12" fill="#1e293b" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+              <polygon points="120,45 80,120 220,120 180,45" fill="rgba(0,240,255,0.06)" stroke="rgba(0,240,255,0.2)"/>
+              <!-- Elementos base -->
+              <rect x="75" y="115" width="25" height="25" fill="#1e293b" stroke="#475569"/>
+              <rect x="135" y="115" width="25" height="25" fill="#1e293b" stroke="var(--cyan-bright)"/>
+              <rect x="195" y="115" width="25" height="25" fill="#1e293b" stroke="#475569"/>
+              <text x="110" y="30" class="callout-label">DRON_SCANNER</text>
+            </svg>
+          </div>
+          <div class="card-footer">
+            <strong>.forEach():</strong> Aplica una función a cada elemento automáticamente.
+          </div>
+        </article>
+
+        <!-- CARD 3: MAP -->
+        <article class="blueprint-card" data-nav="map" title="Abrir la máquina SYS_03">
+          <div class="card-technical-header">
+            <span>SYS_03 // TRANSFORMACION_LINEAL</span>
+            <span>SPEC: INMUTABLE 1:1</span>
+          </div>
+          <div class="card-illustration">
+            <svg viewBox="0 0 300 160" width="100%" height="100%" aria-hidden="true">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--cyan-bright)"/>
+                </marker>
+              </defs>
+              <!-- Cinta y cabina -->
+              <line x1="40" y1="120" x2="260" y2="60" stroke="#334155" stroke-width="12" stroke-linecap="round"/>
+              <rect x="120" y="60" width="55" height="60" fill="#0f172a" stroke="var(--cyan-bright)" stroke-width="2"/>
+              <rect x="60" y="100" width="18" height="18" fill="#334155" stroke="#94a3b8"/>
+              <rect x="210" y="55" width="20" height="20" fill="var(--blue-accent)" stroke="var(--cyan-bright)"/>
+              <!-- Flujo de datos: entrada ➔ cámara ➔ salida -->
+              <line x1="80" y1="96" x2="118" y2="78" stroke="var(--cyan-bright)" stroke-width="1.5" marker-end="url(#arrow)"/>
+              <line x1="178" y1="78" x2="206" y2="63" stroke="var(--cyan-bright)" stroke-width="1.5" marker-end="url(#arrow)"/>
+            </svg>
+          </div>
+          <div class="card-footer">
+            <strong>.map():</strong> Retorna un nuevo arreglo con los resultados transformados.
+          </div>
+        </article>
+
+        <!-- CARD 4: REDUCE -->
+        <article class="blueprint-card" data-nav="reduce" title="Abrir la máquina SYS_04">
+          <div class="card-technical-header">
+            <span>SYS_04 // SINTESIS_ACUMULATIVA</span>
+            <span>SPEC: CONDENSACION</span>
+          </div>
+          <div class="card-illustration">
+            <svg viewBox="0 0 300 160" width="100%" height="100%" aria-hidden="true">
+              <!-- Tolva / Embudo -->
+              <polygon points="90,30 210,30 170,105 130,105" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+              <line x1="150" y1="35" x2="150" y2="95" stroke="var(--cyan-bright)" stroke-dasharray="3 3"/>
+              <!-- Bloque final condensado -->
+              <rect x="135" y="115" width="30" height="30" fill="var(--blue-accent)" stroke="var(--cyan-bright)" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="card-footer">
+            <strong>.reduce():</strong> Acumula valores para entregar un resultado único.
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VISTA 1 · MÓDULO 01   (lámina de referencia: assets/refs/for.jpg)
+         ========================================================================== -->
+    <section id="view-for" class="view-container" aria-label="Módulo for" aria-hidden="true">
+      <div class="simulator-layout">
+
+        <!-- PANEL DE TELEMETRÍA -->
+        <div class="telemetry-sidebar">
+          <div class="code-console-card">
+            <div class="section-title">CONTROL_LOGICO_SECUENCIAL</div>
+
+            <!-- El for se expone partido por fases: init / condición / cuerpo /
+                 incremento. Es lo que permite resaltar i++ por separado (D-05). -->
+            <div class="code-block" id="for-code">
+              <span class="code-line" id="for-l1">let colores = ['Rojo', 'Azul', 'Verde'];</span>
+              <span class="code-line" id="for-l2">for (let i = 0;</span>
+              <span class="code-line" id="for-l3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i &lt; colores.length; <span class="code-tag">// condición</span></span>
+              <span class="code-line" id="for-l4">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++) { <span class="code-tag">// incremento</span></span>
+              <span class="code-line" id="for-l5">&nbsp;&nbsp;console.log(colores[i]); <span class="code-tag">// cuerpo</span></span>
+              <span class="code-line" id="for-l6">}</span>
+            </div>
+
+            <div class="controls-group" data-controls="for">
+              <button class="btn btn-primary" type="button" data-control="step" aria-label="Avanzar un paso">⏭ Siguiente Paso</button>
+              <button class="btn" type="button" data-control="play" aria-pressed="false" aria-label="Reproducción automática">▶ Auto</button>
+              <button class="btn" type="button" data-control="reset" aria-label="Reiniciar la máquina">↺ Reset</button>
+            </div>
+
+            <label class="clock-speed">
+              Clock Speed
+              <input type="range" min="200" max="2000" step="100" value="900" data-speed="for"
+                     aria-label="Velocidad de ejecución del módulo for">
+              <output data-speed-out="for">900 ms</output>
+            </label>
+          </div>
+
+          <div class="code-console-card">
+            <div class="section-title">TERMINAL // STDOUT</div>
+            <div class="stdout-box" id="for-console" role="log" aria-live="polite" aria-label="Salida de la consola"></div>
+          </div>
+        </div>
+
+        <!-- MÁQUINA ISOMÉTRICA -->
+        <div class="viewport-machine">
+          <div class="viewport-header">
+            <div class="viewport-title">Arquitectura del Bucle for</div>
+            <div class="badge-iso">SISTEMA_MECÁNICO // TOPE_LÁSER</div>
+          </div>
+
+          <div class="svg-canvas-wrapper">
+            <svg class="iso-diagram" viewBox="0 0 800 480" role="img" aria-label="Máquina de iteración secuencial: regla graduada, carro móvil, racks de contenedores y barrera láser">
+              <!-- CHASIS DE LOS RACKS -->
+              <g id="for-racks">
+                <path d="M 280 200 L 700 340 L 700 370 L 280 230 Z" class="wire-frame"/>
+                <path d="M 280 120 L 700 260 L 700 290 L 280 150 Z" class="wire-frame"/>
+
+                <g id="box-0" transform="translate(320, 160)">
+                  <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+                  <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+                  <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+                  <text x="68" y="60" class="cube-label">Rojo</text>
+                </g>
+
+                <g id="box-1" transform="translate(440, 200)">
+                  <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+                  <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+                  <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+                  <text x="68" y="60" class="cube-label">Azul</text>
+                </g>
+
+                <g id="box-2" transform="translate(560, 240)">
+                  <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+                  <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+                  <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+                  <text x="64" y="60" class="cube-label">Verde</text>
+                </g>
+              </g>
+
+              <!-- GUÍA MECÁNICA GRADUADA -->
+              <g id="slider-rail">
+                <line x1="120" y1="260" x2="480" y2="400" stroke="#334155" stroke-width="16" stroke-linecap="round"/>
+                <line x1="120" y1="260" x2="480" y2="400" stroke="#64748b" stroke-width="2" stroke-dasharray="10 5"/>
+              </g>
+
+              <!-- RELOJ / CONTADOR LCD DE ÍNDICE -->
+              <g id="counter-dial" transform="translate(80, 200)">
+                <circle cx="30" cy="30" r="28" fill="#091322" stroke="#475569" stroke-width="2"/>
+                <circle cx="30" cy="30" r="22" fill="#0b1324" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                <text id="lcd-index" x="24" y="37" class="lcd-readout">0</text>
+                <text x="-40" y="-10" class="callout-label">Contador manual [i]</text>
+                <circle class="callout-anchor" cx="30" cy="30" r="34"/>
+              </g>
+
+              <!-- PISTÓN / CARRO DESLIZANTE -->
+              <g id="slider-carriage" data-part transform="translate(130, 245)">
+                <rect x="0" y="0" width="45" height="26" fill="#091322" stroke="var(--cyan-bright)" stroke-width="2" transform="rotate(25)"/>
+                <line x1="20" y1="10" x2="60" y2="-30" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                <circle cx="60" cy="-30" r="3" fill="var(--cyan-bright)"/>
+              </g>
+
+              <!-- SENSOR LÁSER DE TOPE ESTRICTO (i < length)
+                   Emisor en (697, 310); el haz sale a 30° hacia la izquierda. -->
+              <g id="laser-sensor" transform="translate(680, 280)">
+                <rect x="0" y="0" width="35" height="60" fill="#091322" stroke="var(--cyan-bright)" stroke-width="2"/>
+                <circle id="laser-emitter" cx="17" cy="30" r="8" fill="var(--cyan-bright)" filter="drop-shadow(0 0 8px var(--cyan-bright))"/>
+                <line id="laser-beam" x1="17" y1="30" x2="-400" y2="-211"
+                      stroke="var(--cyan-bright)" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.25"/>
+              </g>
+
+              <!-- CALLOUTS TÉCNICOS -->
+              <g id="for-annotations">
+                <circle class="callout-anchor" cx="697" cy="310" r="4"/>
+                <text x="296" y="96" class="callout-label" fill="var(--cyan-bright)">Condición de corte estricta (i &lt; length)</text>
+                <line x1="492" y1="102" x2="516" y2="198" class="callout-line"/>
+                <text x="486" y="196" class="callout-label">barrido del haz</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VISTA 2 · MÓDULO 02   (lámina de referencia: assets/refs/forEach.jpg)
+         ========================================================================== -->
+    <section id="view-forEach" class="view-container" aria-label="Módulo forEach" aria-hidden="true">
+      <div class="simulator-layout">
+
+        <div class="telemetry-sidebar">
+          <div class="code-console-card">
+            <div class="section-title">CONTROL_DRON_AUTOMATIZADO</div>
+
+            <div class="code-block" id="forEach-code">
+              <span class="code-line" id="fe-l1">let colores = ['Rojo', 'Azul', 'Verde'];</span>
+              <span class="code-line" id="fe-l2">colores.forEach(function(color) {</span>
+              <span class="code-line" id="fe-l3">&nbsp;&nbsp;console.log(color);</span>
+              <span class="code-line" id="fe-l4">});</span>
+            </div>
+
+            <div class="controls-group" data-controls="forEach">
+              <button class="btn btn-primary" type="button" data-control="step" aria-label="Avanzar un paso">⏭ Siguiente Elemento</button>
+              <button class="btn" type="button" data-control="play" aria-pressed="false" aria-label="Reproducción automática">▶ Auto</button>
+              <button class="btn" type="button" data-control="reset" aria-label="Reiniciar la máquina">↺ Reset</button>
+            </div>
+
+            <label class="clock-speed">
+              Clock Speed
+              <input type="range" min="200" max="2000" step="100" value="1100" data-speed="forEach"
+                     aria-label="Velocidad de ejecución del módulo forEach">
+              <output data-speed-out="forEach">1100 ms</output>
+            </label>
+          </div>
+
+          <div class="code-console-card">
+            <div class="section-title">TERMINAL // STDOUT</div>
+            <div class="stdout-box" id="forEach-console" role="log" aria-live="polite" aria-label="Salida de la consola"></div>
+          </div>
+        </div>
+
+        <div class="viewport-machine">
+          <div class="viewport-header">
+            <div class="viewport-title">Automatización con .forEach()</div>
+            <div class="badge-iso">SIN_GESTIÓN_DE_CONTADOR // ESCANEO_DIRECTO</div>
+          </div>
+
+          <div class="svg-canvas-wrapper">
+            <svg class="iso-diagram" viewBox="0 0 800 480" role="img" aria-label="Máquina de escaneo autónomo: un dron sobrevuela los contenedores y dispara el callback sobre cada celda">
+              <!-- Racks estáticos -->
+              <g transform="translate(40, 20)">
+                <g id="fe-box-0" transform="translate(240, 230)">
+                  <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+                  <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+                  <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+                  <text x="68" y="60" class="cube-label">Rojo</text>
+                </g>
+                <g id="fe-box-1" transform="translate(360, 270)">
+                  <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+                  <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+                  <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+                  <text x="68" y="60" class="cube-label">Azul</text>
+                </g>
+                <g id="fe-box-2" transform="translate(480, 310)">
+                  <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+                  <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+                  <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+                  <text x="64" y="60" class="cube-label">Verde</text>
+                </g>
+              </g>
+
+              <!-- DRON VOLADOR AUTÓNOMO -->
+              <g id="fe-drone" data-part transform="translate(310, 140)">
+                <!-- Cono de escaneo proyectado -->
+                <polygon id="fe-scan-beam" points="50,20 -10,130 110,130" fill="rgba(0, 240, 255, 0.18)" stroke="var(--cyan-bright)" stroke-dasharray="4 2" opacity="0"/>
+
+                <!-- Chasis y rotores -->
+                <ellipse cx="50" cy="20" rx="42" ry="14" fill="#0b1324" stroke="var(--cyan-bright)" stroke-width="2"/>
+                <circle cx="15" cy="15" r="10" stroke="#64748b" fill="none" stroke-width="1.5"/>
+                <circle cx="85" cy="15" r="10" stroke="#64748b" fill="none" stroke-width="1.5"/>
+                <circle cx="50" cy="20" r="5" fill="var(--cyan-bright)"/>
+
+                <text x="100" y="10" class="callout-label" fill="var(--cyan-bright)">Agente Autónomo (Callback)</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VISTA 3 · MÓDULO 03   (lámina de referencia: assets/refs/map.jpg)
+         ========================================================================== -->
+    <section id="view-map" class="view-container" aria-label="Módulo map" aria-hidden="true">
+      <div class="simulator-layout">
+
+        <div class="telemetry-sidebar">
+          <div class="code-console-card">
+            <div class="section-title">TRANSFORMACIÓN_LINEAL_MAP</div>
+
+            <div class="code-block" id="map-code">
+              <span class="code-line" id="map-l1">let productos = ['papas', 'gaseosa'];</span>
+              <span class="code-line" id="map-l2">let enMayusculas = productos.map(</span>
+              <span class="code-line" id="map-l3">&nbsp;&nbsp;item =&gt; item.toUpperCase()</span>
+              <span class="code-line" id="map-l4">);</span>
+            </div>
+
+            <div class="controls-group" data-controls="map">
+              <button class="btn btn-primary" type="button" data-control="step" aria-label="Procesar el siguiente ítem">⏭ Procesar Item</button>
+              <button class="btn" type="button" data-control="play" aria-pressed="false" aria-label="Reproducción automática">▶ Auto</button>
+              <button class="btn" type="button" data-control="reset" aria-label="Reiniciar la máquina">↺ Reset</button>
+            </div>
+
+            <label class="clock-speed">
+              Clock Speed
+              <input type="range" min="200" max="2000" step="100" value="1000" data-speed="map"
+                     aria-label="Velocidad de ejecución del módulo map">
+              <output data-speed-out="map">1000 ms</output>
+            </label>
+          </div>
+
+          <div class="code-console-card">
+            <div class="section-title">TERMINAL // ARREGLO RETORNADO</div>
+            <div class="stdout-box" id="map-console" role="log" aria-live="polite" aria-label="Salida de la consola"></div>
+          </div>
+        </div>
+
+        <div class="viewport-machine">
+          <div class="viewport-header">
+            <div class="viewport-title">Transformación Inmutable con .map()</div>
+            <div class="badge-iso">ENTRADA_BRUTA ➔ CÁMARA ➔ NUEVO_ARREGLO</div>
+          </div>
+
+          <div class="svg-canvas-wrapper">
+            <svg class="iso-diagram" viewBox="0 0 800 480" role="img" aria-label="Máquina de transformación: cinta transportadora con cámara central, estantería de origen intacta y estantería de salida">
+              <!-- Estantería de Origen -->
+              <g id="shelf-origin" transform="translate(60, 160)">
+                <path d="M 0 40 L 80 0 L 160 40 L 80 80 Z" class="wire-frame"/>
+                <path d="M 0 100 L 80 60 L 160 100 L 80 140 Z" class="wire-frame"/>
+                <text x="20" y="158" class="callout-label">Estantería de Origen (Intacta)</text>
+              </g>
+
+              <!-- Cinta Transportadora -->
+              <path d="M 190 280 L 610 140" stroke="#334155" stroke-width="20" stroke-linecap="round"/>
+              <path d="M 190 280 L 610 140" stroke="var(--cyan-bright)" stroke-width="2" stroke-dasharray="12 8"/>
+
+              <!-- Cámara de Transformación -->
+              <g id="transform-chamber" transform="translate(350, 140)">
+                <rect x="0" y="0" width="90" height="110" fill="#091322" stroke="var(--cyan-bright)" stroke-width="2.5"/>
+                <circle cx="45" cy="55" r="24" fill="none" stroke="var(--blue-laser)" stroke-width="2" stroke-dasharray="8 4"/>
+                <text x="18" y="58" class="chamber-label">.toUpperCase()</text>
+              </g>
+
+              <!-- Ítem dinámico en la cinta -->
+              <g id="conveyor-item" data-part transform="translate(230, 240)">
+                <rect x="0" y="0" width="30" height="30" fill="#334155" stroke="#94a3b8" stroke-width="1.5"/>
+                <text id="conveyor-item-text" x="5" y="20" class="item-label">papas</text>
+              </g>
+
+              <!-- Nueva Estantería Destino: aquí se acumulan los ítems
+                   transformados, uno por cada entrada (correspondencia 1:1) -->
+              <g id="shelf-dest" transform="translate(620, 80)">
+                <path d="M 0 40 L 80 0 L 160 40 L 80 80 Z" class="wire-frame"/>
+                <path d="M 0 100 L 80 60 L 160 100 L 80 140 Z" class="wire-frame"/>
+                <text x="10" y="158" class="callout-label" fill="var(--cyan-bright)">Nueva Estantería</text>
+              </g>
+
+              <g id="map-out-items">
+                <g id="map-out-slot-0" opacity="0">
+                  <rect x="0" y="0" width="34" height="22" fill="var(--blue-accent)" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                  <text id="map-out-label-0" x="5" y="15" class="item-label">—</text>
+                </g>
+                <g id="map-out-slot-1" opacity="0">
+                  <rect x="0" y="0" width="34" height="22" fill="var(--blue-accent)" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                  <text id="map-out-label-1" x="5" y="15" class="item-label">—</text>
+                </g>
+              </g>
+
+              <!-- Lectura del arreglo retornado -->
+              <text id="map-out" x="430" y="400" class="callout-label" fill="var(--cyan-bright)">salida → []</text>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         VISTA 4 · MÓDULO 04   (lámina de referencia: assets/refs/reduce.jpg)
+         ========================================================================== -->
+    <section id="view-reduce" class="view-container" aria-label="Módulo reduce" aria-hidden="true">
+      <div class="simulator-layout">
+
+        <div class="telemetry-sidebar">
+          <div class="code-console-card">
+            <div class="section-title">SÍNTESIS_Y_CONDENSACIÓN</div>
+
+            <div class="code-block" id="reduce-code">
+              <span class="code-line" id="red-l1">let valores = [10, 20, 30];</span>
+              <span class="code-line" id="red-l2">let total = valores.reduce(</span>
+              <span class="code-line" id="red-l3">&nbsp;&nbsp;(acc, curr) =&gt; acc + curr,</span>
+              <span class="code-line" id="red-l4">&nbsp;&nbsp;0 <span class="code-tag">// valor inicial</span></span>
+              <span class="code-line" id="red-l5">);</span>
+            </div>
+
+            <div class="controls-group" data-controls="reduce">
+              <button class="btn btn-primary" type="button" data-control="step" aria-label="Alimentar la tolva con el siguiente valor">⏭ Alimentar Tolva</button>
+              <button class="btn" type="button" data-control="play" aria-pressed="false" aria-label="Reproducción automática">▶ Auto</button>
+              <button class="btn" type="button" data-control="reset" aria-label="Reiniciar la máquina">↺ Reset</button>
+            </div>
+
+            <label class="clock-speed">
+              Clock Speed
+              <input type="range" min="200" max="2000" step="100" value="1000" data-speed="reduce"
+                     aria-label="Velocidad de ejecución del módulo reduce">
+              <output data-speed-out="reduce">1000 ms</output>
+            </label>
+          </div>
+
+          <div class="code-console-card">
+            <div class="section-title">ACUMULADOR // TELEMETRÍA</div>
+            <div class="stdout-box" id="reduce-console" role="log" aria-live="polite" aria-label="Salida de la consola"></div>
+          </div>
+        </div>
+
+        <div class="viewport-machine">
+          <div class="viewport-header">
+            <div class="viewport-title">Síntesis de Datos con .reduce()</div>
+            <div class="badge-iso">TOLVA_ACUMULADORA ➔ SALIDA_ÚNICA</div>
+          </div>
+
+          <div class="svg-canvas-wrapper">
+            <svg class="iso-diagram" viewBox="0 0 800 480" role="img" aria-label="Máquina de compactación: los bloques caen en una tolva y se sintetizan en un único bloque de salida">
+              <!-- Tolva de Compactación -->
+              <g id="hopper-funnel" transform="translate(250, 40)">
+                <polygon points="50,40 250,40 180,240 120,240" fill="#091322" stroke="#475569" stroke-width="2"/>
+                <path d="M 70 60 L 130 220" stroke="var(--blue-laser)" stroke-width="1.5" stroke-dasharray="6 3"/>
+                <path d="M 230 60 L 170 220" stroke="var(--blue-laser)" stroke-width="1.5" stroke-dasharray="6 3"/>
+                <!-- Bloque compactado: crece con cada entrada sintetizada -->
+                <rect id="hopper-stack" x="122" y="240" width="56" height="0" fill="var(--blue-accent)" stroke="var(--cyan-bright)" stroke-width="1.5" opacity="0"/>
+                <text x="100" y="25" class="callout-label">Recorre y embuda elementos</text>
+              </g>
+
+              <!-- Bloque que cae -->
+              <g id="falling-block" data-part="press" transform="translate(380, 20)">
+                <rect x="0" y="0" width="35" height="35" fill="#334155" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                <text id="falling-val" x="8" y="22" class="item-label">10</text>
+              </g>
+
+              <!-- Bloque acumulador final condensado -->
+              <g id="accumulator-result" transform="translate(370, 320)">
+                <rect x="0" y="0" width="60" height="50" fill="var(--blue-accent)" stroke="var(--cyan-bright)" stroke-width="2"/>
+                <text id="total-val" x="12" y="32" class="lcd-readout-sm">acc: 0</text>
+                <text x="-120" y="28" class="callout-label" fill="var(--cyan-bright)">Resultado final único ➔</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       MOTOR
+       ========================================================================== -->
+  <script src="scripts/app.js"></script>
+  <script src="scripts/engine.js"></script>
+  <script src="scripts/modules/for.js"></script>
+  <script src="scripts/modules/forEach.js"></script>
+  <script src="scripts/modules/map.js"></script>
+  <script src="scripts/modules/reduce.js"></script>
+</body>
+</html>

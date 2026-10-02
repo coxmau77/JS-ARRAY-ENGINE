@@ -1,0 +1,112 @@
+/* ==========================================================================
+   MÁQUINAS · VECTORES SVG ISOMÉTRICOS Y CALLOUTS
+   Proyección axonométrica a 30°. Las clases viven acá para que los módulos
+   JS puedan energizar piezas por nombre (.glow-cyan) sin conocer colores.
+
+   Regla: las piezas móviles se marcan con data-part y acá se les da la
+   transición. JS solo escribe transform; la interpolación es de CSS.
+   ========================================================================== */
+
+svg.iso-diagram {
+  width: 100%;
+  height: 100%;
+  max-height: 520px;
+  overflow: visible;
+}
+
+/* --- Trazos estructurales --- */
+.wire-frame {
+  fill: none;
+  stroke: #334155;
+  stroke-width: 1.5;
+}
+
+/* --- Cubo isométrico base (plantilla de docs/03-sistema-diseno.md §3.2) --- */
+.iso-cube-top   { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
+.iso-cube-left  { fill: #0f172a; stroke: #475569; stroke-width: 1.2; }
+.iso-cube-right { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
+
+/* --- Estados de excitación (los únicos dos que JS puede aplicar) --- */
+.glow-cyan {
+  stroke: var(--cyan-bright) !important;
+  filter: drop-shadow(0 0 6px var(--cyan-bright));
+}
+
+.fill-cyan {
+  fill: var(--cyan-bright) !important;
+}
+
+/* --- Calouts de ingeniería --- */
+.callout-line {
+  stroke: var(--blue-laser);
+  stroke-width: 1;
+  stroke-dasharray: 4 2;
+}
+
+.callout-label {
+  font-family: var(--font-code);
+  font-size: 11px;
+  fill: var(--text-dim);
+}
+
+/* Ancla circular: el punto exacto al que apunta la leyenda */
+.callout-anchor {
+  fill: none;
+  stroke: var(--blue-laser);
+  stroke-width: 1.5;
+}
+
+/* --- Textos dentro de la máquina --- */
+.cube-label {
+  font-family: var(--font-code);
+  font-size: 12px;
+  fill: #fff;
+}
+
+.item-label {
+  font-family: var(--font-code);
+  font-size: 8px;
+  fill: #fff;
+}
+
+.chamber-label {
+  font-family: var(--font-code);
+  font-size: 10px;
+  fill: var(--cyan-bright);
+}
+
+.lcd-readout {
+  font-family: var(--font-code);
+  font-size: 20px;
+  font-weight: 700;
+  fill: var(--cyan-bright);
+}
+
+.lcd-readout-sm {
+  font-family: var(--font-code);
+  font-size: 16px;
+  font-weight: 700;
+  fill: #fff;
+}
+
+/* --- Transiciones de las piezas móviles --- */
+[data-part] {
+  transition: transform 0.6s var(--ease-mech);
+}
+
+[data-part="press"] {
+  transition: transform 0.5s var(--ease-press);
+}
+
+/* La opacidad del haz y del cono de escaneo cambia más rápido que la posición */
+#laser-beam, #fe-scan-beam {
+  transition: opacity 0.25s linear;
+}
+
+/* --- Accesibilidad: sin movimiento, la máquina sigue siendo legible --- */
+@media (prefers-reduced-motion: reduce) {
+  [data-part], #laser-beam, #fe-scan-beam, .view-container, .blueprint-card {
+    transition: none !important;
+    animation: none !important;
+  }
+}

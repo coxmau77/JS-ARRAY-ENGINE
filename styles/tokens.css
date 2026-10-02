@@ -1,0 +1,74 @@
+/* ==========================================================================
+   TOKENS · BASE
+   Única fuente de verdad de la paleta, la retícula y la tipografía.
+   Cualquier valor nuevo se declara acá y solo acá.
+   ========================================================================== */
+
+:root {
+  /* Fondos y Capas */
+  --bg-space: #070a12;          /* Canvas global exterior */
+  --bg-blueprint: #0b1324;      /* Superficie de tarjetas y módulos principales */
+  --bg-panel: #0f1c34;          /* Contenedores de controles e interfaces */
+  --bg-subpanel: #091322;       /* Fondos de terminal, displays y cavidades mecánicas */
+
+  /* Retícula Milimétrica */
+  --grid-line: rgba(56, 189, 248, 0.07); /* Malla secundaria (20px) */
+  --grid-axis: rgba(56, 189, 248, 0.16); /* Malla estructural primaria (100px) */
+
+  /* Acentos de Energía y Telemetría */
+  --cyan-bright: #00f0ff;       /* Estado activo, láser, indicadores de foco */
+  --cyan-glow: rgba(0, 240, 255, 0.35); /* Resplandor difuso de componentes energizados */
+  --blue-accent: #2563eb;       /* Elementos transformados / condensados */
+  --blue-laser: #0284c7;        /* Haces de luz, líneas guía y sensores */
+
+  /* Tipografía y Trazos */
+  --text-main: #f1f5f9;         /* Títulos y datos activos */
+  --text-dim: #94a3b8;          /* Etiquetas descriptivas e interfaces pasivas */
+  --text-muted: #64748b;        /* Comentarios, metadatos y retículas */
+  --border-technical: #1e3a64;  /* Estructura metálica / chasis base */
+  --border-accent: #00f0ff;     /* Bordes energizados */
+
+  /* Tipografías */
+  --font-code: 'Fira Code', 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* Movimiento */
+  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-mech: cubic-bezier(0.16, 1, 0.3, 1); /* Desaceleración técnica (máquinas) */
+  --ease-press: cubic-bezier(0.5, 0, 1, 1);    /* Caída / compactación */
+
+  /* Geometría de la retícula */
+  --grid-step: 20px;            /* Malla secundaria */
+  --grid-axis-step: 100px;      /* Malla estructural */
+
+  /* Cortes biselados industriales (prohibido border-radius en estructura) */
+  --chamfer-card: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  --chamfer-control: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  --chamfer-viewport: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-space);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(var(--grid-axis) 2px, transparent 2px),
+    linear-gradient(90deg, var(--grid-axis) 2px, transparent 2px);
+  background-size:
+    var(--grid-step) var(--grid-step),
+    var(--grid-step) var(--grid-step),
+    var(--grid-axis-step) var(--grid-axis-step),
+    var(--grid-axis-step) var(--grid-axis-step);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
