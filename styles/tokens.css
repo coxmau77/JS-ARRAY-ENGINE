@@ -5,6 +5,8 @@
    ========================================================================== */
 
 :root {
+  color-scheme: dark light;
+
   /* Fondos y Capas */
   --bg-space: #070a12;          /* Canvas global exterior */
   --bg-blueprint: #0b1324;      /* Superficie de tarjetas y módulos principales */
@@ -20,6 +22,20 @@
   --cyan-glow: rgba(0, 240, 255, 0.35); /* Resplandor difuso de componentes energizados */
   --blue-accent: #2563eb;       /* Elementos transformados / condensados */
   --blue-laser: #0284c7;        /* Haces de luz, líneas guía y sensores */
+
+  /* Superficies SVG (Isométrico) */
+  --surf-cube-top: #0f172a;
+  --surf-cube-left: #0b1324;
+  --surf-cube-right: #0f1c34;
+  --surf-cube-stroke: #334155;
+  --surf-wire: rgba(100, 116, 139, 0.45);
+  --surf-wire-fill: rgba(15, 28, 52, 0.25);
+  --surf-chassis: #091322;
+  --surf-rail: #334155;
+  --surf-rail-detail: #64748b;
+  --surf-item: #334155;
+  --surf-item-stroke: #94a3b8;
+  --surf-beam: rgba(0, 240, 255, 0.18);
 
   /* Tipografía y Trazos */
   --text-main: #f1f5f9;         /* Títulos y datos activos */
@@ -45,6 +61,43 @@
   --chamfer-card: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
   --chamfer-control: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   --chamfer-viewport: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%);
+}
+
+/* THEME: LIGHT */
+:root[data-theme="light"] {
+  --bg-space: #f8fafc;
+  --bg-blueprint: #f1f5f9;
+  --bg-panel: #ffffff;
+  --bg-subpanel: #f8fafc;
+
+  --grid-line: rgba(14, 165, 233, 0.08);
+  --grid-axis: rgba(14, 165, 233, 0.16);
+
+  --cyan-bright: #0ea5e9;
+  --cyan-glow: rgba(14, 165, 233, 0.25);
+  --blue-accent: #e0f2fe;
+  --blue-laser: #38bdf8;
+
+  --surf-cube-top: #ffffff;
+  --surf-cube-left: #f8fafc;
+  --surf-cube-right: #f1f5f9;
+  --surf-cube-stroke: #cbd5e1;
+  --surf-wire: rgba(71, 85, 105, 0.28);
+  --surf-wire-fill: rgba(226, 232, 240, 0.5);
+  --surf-chassis: #f8fafc;
+  --surf-rail: #cbd5e1;
+  --surf-rail-detail: #94a3b8;
+  --surf-item: #f1f5f9;
+  --surf-item-stroke: #cbd5e1;
+  --surf-beam: rgba(14, 165, 233, 0.16);
+
+  --text-main: #0f172a;
+  --text-dim: #475569;
+  --text-muted: #64748b;
+  --border-technical: #cbd5e1;
+  --border-accent: #0ea5e9;
+
+  --shadow-panel: 0 10px 60px -20px rgba(15, 23, 42, 0.25);
 }
 
 * {

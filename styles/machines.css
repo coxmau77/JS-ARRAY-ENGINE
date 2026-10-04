@@ -17,14 +17,14 @@ svg.iso-diagram {
 /* --- Trazos estructurales --- */
 .wire-frame {
   fill: none;
-  stroke: #334155;
+  stroke: var(--surf-wire);
   stroke-width: 1.5;
 }
 
 /* --- Cubo isométrico base (plantilla de docs/03-sistema-diseno.md §3.2) --- */
-.iso-cube-top   { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
-.iso-cube-left  { fill: #0f172a; stroke: #475569; stroke-width: 1.2; }
-.iso-cube-right { fill: #1e293b; stroke: #475569; stroke-width: 1.2; }
+.iso-cube-top   { fill: var(--surf-cube-top); stroke: var(--surf-cube-stroke); stroke-width: 1.2; }
+.iso-cube-left  { fill: var(--surf-cube-left); stroke: var(--surf-cube-stroke); stroke-width: 1.2; }
+.iso-cube-right { fill: var(--surf-cube-right); stroke: var(--surf-cube-stroke); stroke-width: 1.2; }
 
 /* --- Estados de excitación (los únicos dos que JS puede aplicar) --- */
 .glow-cyan {
@@ -60,13 +60,13 @@ svg.iso-diagram {
 .cube-label {
   font-family: var(--font-code);
   font-size: 12px;
-  fill: #fff;
+  fill: var(--text-main);
 }
 
 .item-label {
   font-family: var(--font-code);
   font-size: 8px;
-  fill: #fff;
+  fill: var(--text-main);
 }
 
 .chamber-label {

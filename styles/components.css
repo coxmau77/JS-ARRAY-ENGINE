@@ -45,6 +45,9 @@
   box-shadow: 0 0 15px var(--cyan-glow);
 }
 
+/* En las páginas individuales la pestaña es un enlace de vuelta al Hub */
+a.tab-btn { text-decoration: none; }
+
 /* --- TARJETA DEL HUB --- */
 .blueprint-card {
   background: var(--bg-blueprint);
@@ -209,7 +212,7 @@
   padding: 10px;
   font-family: var(--font-code);
   font-size: 0.8rem;
-  color: #38bdf8;
+  color: var(--blue-laser);
   overflow-y: auto;
 }
 
@@ -246,4 +249,44 @@
 
 .blueprint-card:focus-visible {
   box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+}
+
+/* --- THEME TOGGLE --- */
+.theme-toggle {
+  background: var(--bg-subpanel);
+  border: 1px solid var(--border-technical);
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: var(--transition);
+  clip-path: var(--chamfer-control);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.theme-toggle:hover {
+  border-color: var(--cyan-bright);
+  color: var(--cyan-bright);
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+
+.theme-toggle[aria-pressed="true"] {
+  color: var(--cyan-bright);
+  border-color: var(--cyan-bright);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }

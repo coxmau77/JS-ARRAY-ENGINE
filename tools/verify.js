@@ -58,11 +58,12 @@ function makeEl(id, lines) {
 }
 
 const store = {};
+/* Cantidad de .code-line de cada bloque de codigo que el DOM simulado expone. */
+const CODE_LINES = { 'for-code': 6, 'reduce-code': 5, 'forNested-code': 11 };
 function el(id) {
   if (!store[id]) {
     const isCode = /-code$/.test(id);
-    const n = id === 'for-code' ? 6 : id === 'reduce-code' ? 5 : 4;
-    store[id] = makeEl(id, isCode ? Array.from({ length: n }, (_, i) => `${id}-l${i + 1}`) : []);
+    store[id] = makeEl(id, isCode ? Array.from({ length: CODE_LINES[id] || 4 }, (_, i) => `${id}-l${i + 1}`) : []);
   }
   return store[id];
 }
@@ -85,7 +86,8 @@ vm.createContext(sandbox);
 const FILES = [
   'scripts/app.js', 'scripts/engine.js',
   'scripts/modules/for.js', 'scripts/modules/forEach.js',
-  'scripts/modules/map.js', 'scripts/modules/reduce.js'
+  'scripts/modules/map.js', 'scripts/modules/reduce.js',
+  'scripts/modules/forNested.js'
 ];
 
 for (const file of FILES) {
@@ -112,7 +114,8 @@ const CLOSING = {
   for: 'Fin del bucle',
   forEach: `Iteraci${OACUTE}n completa.`,
   map: 'Origen intacto',
-  reduce: 'Salida única:'
+  reduce: 'Salida única:',
+  forNested: 'Fin del recorrido'
 };
 
 function runToEnd(id, limit = 40) {
@@ -171,20 +174,38 @@ check('valor final unico', el('total-val').textContent, 'acc: 60');
 check('el bloque compactado crecio 3 etapas (48 px)', el('hopper-stack').getAttribute('height'), '48');
 check('el bloque vuelve a la posicion de espera', el('falling-block').getAttribute('transform'), 'translate(380, 20)');
 
+/* ------------------------------------------------------ 05 for dentro de for */
+console.log('\n--- SYS_05 for dentro de for ---');
+const fn = runToEnd('forNested', 60);
+check('41 cuadros hasta completar', fn.steps, 41);
+check('stdout: las 9 combinaciones, en orden de fila', fn.logs.filter((l) => l.startsWith('stdout:')), [
+  'stdout: "A1"', 'stdout: "A2"', 'stdout: "A3"',
+  'stdout: "B1"', 'stdout: "B2"', 'stdout: "B3"',
+  'stdout: "C1"', 'stdout: "C2"', 'stdout: "C3"'
+]);
+check('el interno se reinicia 3 veces (una por fila)', fn.logs.filter((l) => l.startsWith('Reinicio')).length, 3);
+check('el externo avanza 3 veces', fn.logs.filter((l) => l.startsWith('i++')).length, 3);
+check('el externo avanza solo despues de agotarse el interno', fn.logs.findIndex((l) => l.startsWith('i++')) > fn.logs.findIndex((l) => l === 'stdout: "A3"'), true);
+check('contadores quedan en i = 3 y j = 3', [String(el('outer-index').textContent), String(el('inner-index').textContent)], ['3', '3']);
+check('el carro externo queda en la ultima fila', el('outer-carriage').getAttribute('transform'), 'translate(20, 184)');
+check('el cabezal interno queda sobre la ultima celda', el('inner-head').getAttribute('transform'), 'translate(420, 225)');
+check('las 9 celdas quedan encendidas', Array.from({ length: 9 }, (_, k) => el(`nf-cell-${k}`).querySelector('.iso-cube-top').classList.contains('glow-cyan')).every(Boolean), true);
+
 /* ------------------------------------------------- regresion: la carrera */
 console.log('\n--- regresion D-08: ningun elemento duplicado ni saltado ---');
 for (const [id, marker, expected] of [
   ['for', 'stdout:', 3],
   ['forEach', 'Callback ejecutado', 3],
   ['map', '.toUpperCase():', 2],
-  ['reduce', 'acc (', 3]
+  ['reduce', 'acc (', 3],
+  ['forNested', 'stdout:', 9]
 ]) {
   check(`${id} · ${expected} ocurrencias de "${marker}"`, el(`${id}-console`)._log.filter((l) => l.includes(marker)).length, expected);
 }
 
 /* --------------------------------------------------- reset determinista */
 console.log('\n--- reset: ciclo reproducible y terminal limpia ---');
-for (const id of ['for', 'forEach', 'map', 'reduce']) {
+for (const id of ['for', 'forEach', 'map', 'reduce', 'forNested']) {
   Engine.reset(id);
   const first = JSON.stringify(Engine.get(id).state);
   Engine.step(id);

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>for dentro de for — JS Array Engine</title>
+  <meta name="description" content="Ejemplo individual: cómo funciona un bucle for anidado, con dos contadores, dos carros y la reinicialización del bucle interno.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Hojas compartidas con el Hub: sin estilos ni scripts inline -->
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/machines.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       BARRA DE NAVEGACIÓN (misma marca, con la vuelta al Hub como pestaña)
+       ========================================================================== -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon" aria-hidden="true">&lt;/&gt;</div>
+      <div>
+        <h1>Anidación de Bucles</h1>
+        <span>SYS_05 // BUCLES_ANIDADOS</span>
+      </div>
+    </div>
+
+    <nav class="nav-tabs" aria-label="Navegación del proyecto">
+      <a class="tab-btn active" href="index.html" aria-current="page">[ ← VOLVER AL INDEX ]</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 class="sr-only">El bucle for dentro de un for: dos contadores, dos carros y nueve combinaciones</h2>
+
+    <div class="simulator-layout">
+
+      <!-- ======================================================================
+           PANEL DE TELEMETRÍA
+           ====================================================================== -->
+      <div class="telemetry-sidebar">
+        <div class="code-console-card">
+          <div class="section-title">CONTROL_DUAL_ANIDADO</div>
+
+          <!-- El código se expone partido por fases (D-05): cada movimiento
+               mecánico necesita una línea propia que resaltar. -->
+          <div class="code-block" id="forNested-code">
+            <span class="code-line">let filas = ['A', 'B', 'C'];</span>
+            <span class="code-line">let columnas = [1, 2, 3];</span>
+            <span class="code-line">for (let i = 0;</span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i &lt; filas.length; <span class="code-tag">// externo</span></span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i++) { <span class="code-tag">// externo</span></span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;for (let j = 0; <span class="code-tag">// se reinicia</span></span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j &lt; columnas.length;</span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;j++) {</span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log(filas[i] + columnas[j]);</span>
+            <span class="code-line">&nbsp;&nbsp;&nbsp;}</span>
+            <span class="code-line">}</span>
+          </div>
+
+          <div class="controls-group" data-controls="forNested">
+            <button class="btn btn-primary" type="button" data-control="step" aria-label="Avanzar un cuadro">⏭ Siguiente Cuadro</button>
+            <button class="btn" type="button" data-control="play" aria-pressed="false" aria-label="Reproducción automática">▶ Auto</button>
+            <button class="btn" type="button" data-control="reset" aria-label="Reiniciar la máquina">↺ Reset</button>
+          </div>
+
+          <label class="clock-speed">
+            Clock Speed
+            <input type="range" min="200" max="2000" step="100" value="600" data-speed="forNested"
+                   aria-label="Velocidad de ejecución del bucle anidado">
+            <output data-speed-out="forNested">600 ms</output>
+          </label>
+        </div>
+
+        <div class="code-console-card">
+          <div class="section-title">TERMINAL // STDOUT</div>
+          <div class="stdout-box" id="forNested-console" role="log" aria-live="polite" aria-label="Salida de la consola"></div>
+        </div>
+
+        <div class="code-console-card">
+          <div class="section-title">NOTAS_DE_OPERADOR</div>
+          <div class="code-block">
+            <span class="code-line"><span class="code-tag">· El interno se reinicia solo: al agotarse, j vuelve a 0.</span></span>
+            <span class="code-line"><span class="code-tag">· i solo avanza cuando j ya recorrió la fila completa.</span></span>
+            <span class="code-line"><span class="code-tag">· 3 vueltas externas × 3 internas = 9 cuerpos ejecutados.</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================================
+           MÁQUINA ISOMÉTRICA
+           ====================================================================== -->
+      <div class="viewport-machine">
+        <div class="viewport-header">
+          <div class="viewport-title">Arquitectura del Bucle Anidado</div>
+          <div class="badge-iso">3 FILAS × 3 COLUMNAS ➔ 9 COMBINACIONES</div>
+        </div>
+
+        <div class="svg-canvas-wrapper">
+          <svg class="iso-diagram" viewBox="0 0 800 480" role="img" aria-label="Máquina de bucles anidados: plataforma de 3 filas por 3 columnas, un carro externo que avanza de fila en fila y un cabezal de barrido que recorre cada fila entera">
+            <!-- PLATAFORMA DE LA MALLA -->
+            <g id="nf-rack">
+              <path d="M 420 110 L 660 190 L 420 270 L 180 190 Z" class="wire-frame"/>
+              <path d="M 660 190 L 660 230 L 420 310 L 420 270 Z" class="wire-frame"/>
+              <path d="M 180 190 L 180 230 L 420 310 L 420 270 Z" class="wire-frame"/>
+            </g>
+
+            <!-- CARRO EXTERNO · señala la fila activa (se mueve con i) -->
+            <g id="outer-carriage" data-part transform="translate(260, 104)">
+              <path d="M 60 6 L 100 26 L 60 46" fill="none" stroke="var(--cyan-bright)" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="72" y="32" class="callout-label" fill="var(--cyan-bright)">i</text>
+            </g>
+
+            <!-- LAS 9 CELDAS · se encienden a medida que el interno las recorre -->
+            <g id="nf-cell-0" transform="translate(420, 110)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">A1</text>
+            </g>
+            <g id="nf-cell-1" transform="translate(540, 150)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">A2</text>
+            </g>
+            <g id="nf-cell-2" transform="translate(660, 190)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">A3</text>
+            </g>
+            <g id="nf-cell-3" transform="translate(300, 150)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">B1</text>
+            </g>
+            <g id="nf-cell-4" transform="translate(420, 190)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">B2</text>
+            </g>
+            <g id="nf-cell-5" transform="translate(540, 230)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">B3</text>
+            </g>
+            <g id="nf-cell-6" transform="translate(180, 190)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">C1</text>
+            </g>
+            <g id="nf-cell-7" transform="translate(300, 230)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">C2</text>
+            </g>
+            <g id="nf-cell-8" transform="translate(420, 270)">
+              <polygon points="40,20 80,0 120,20 80,40" class="iso-cube-top"/>
+              <polygon points="40,20 80,40 80,85 40,65" class="iso-cube-left"/>
+              <polygon points="80,40 120,20 120,65 80,85" class="iso-cube-right"/>
+              <text x="68" y="60" class="cube-label">C3</text>
+            </g>
+
+            <!-- CABEZAL INTERNO · barre la fila y se enciende durante el barrido -->
+            <g id="inner-head" data-part transform="translate(420, 65)">
+              <circle id="inner-lens" cx="60" cy="14" r="9" fill="var(--bg-blueprint)" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+              <line x1="51" y1="14" x2="69" y2="14" stroke="var(--cyan-bright)" stroke-width="1"/>
+              <line x1="60" y1="5" x2="60" y2="23" stroke="var(--cyan-bright)" stroke-width="1"/>
+              <line x1="60" y1="23" x2="60" y2="60" stroke="var(--blue-laser)" stroke-width="1.5" stroke-dasharray="4 2"/>
+            </g>
+
+            <!-- PANEL DE CONTADORES: los dos índices, siempre legibles -->
+            <g id="nf-counters">
+              <path d="M 46 330 L 330 330 L 352 478 L 68 478 Z" class="wire-frame"/>
+              <text x="66" y="352" class="callout-label">CONTADORES VIVOS</text>
+
+              <g id="outer-dial" transform="translate(96, 356)">
+                <circle cx="30" cy="30" r="22" fill="var(--bg-subpanel)" stroke="var(--surf-cube-stroke)" stroke-width="2"/>
+                <circle cx="30" cy="30" r="17" fill="var(--bg-blueprint)" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                <text id="outer-index" x="24" y="38" class="lcd-readout">0</text>
+                <circle class="callout-anchor" cx="30" cy="30" r="30"/>
+              </g>
+              <g id="inner-dial" transform="translate(96, 420)">
+                <circle cx="30" cy="30" r="22" fill="var(--bg-subpanel)" stroke="var(--surf-cube-stroke)" stroke-width="2"/>
+                <circle cx="30" cy="30" r="17" fill="var(--bg-blueprint)" stroke="var(--cyan-bright)" stroke-width="1.5"/>
+                <text id="inner-index" x="24" y="38" class="lcd-readout">0</text>
+                <circle class="callout-anchor" cx="30" cy="30" r="30"/>
+              </g>
+
+              <text x="162" y="390" class="callout-label" fill="var(--cyan-bright)">externo [i]</text>
+              <text x="162" y="454" class="callout-label" fill="var(--cyan-bright)">interno [j]</text>
+            </g>
+
+            <!-- CALLOUTS DE INGENIERÍA -->
+            <g id="nf-annotations">
+              <circle class="callout-anchor" cx="340" cy="120" r="4"/>
+              <text x="150" y="86" class="callout-label">carro externo: avanza de fila en fila</text>
+              <line x1="256" y1="92" x2="334" y2="116" class="callout-line"/>
+
+              <circle class="callout-anchor" cx="480" cy="79" r="4"/>
+              <text x="560" y="56" class="callout-label" fill="var(--cyan-bright)">cabezal interno: recorre la fila</text>
+              <line x1="556" y1="60" x2="492" y2="74" class="callout-line"/>
+            </g>
+
+            <!-- ORIENTACIÓN Y LEYENDA DEL RASTRO -->
+            <text id="nf-status" x="400" y="424" class="callout-label" fill="var(--cyan-bright)">fase // inicialización</text>
+            <text x="400" y="452" class="callout-label">trazo cian = celda recorrida · relleno cian = activa</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       MOTOR: el mismo Player genérico que las cuatro máquinas del Hub
+       ========================================================================== -->
+  <script src="scripts/engine.js"></script>
+  <script src="scripts/modules/forNested.js"></script>
+</body>
+</html>
